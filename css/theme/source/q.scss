@@ -1,0 +1,78 @@
+/**
+ * Sky theme for reveal.js.
+ *
+ * Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+
+
+// Include theme-specific fonts
+@import url(https://fonts.googleapis.com/css?family=News+Cycle:400,700);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800,700);
+
+// Override theme settings (see ../template/settings.scss)
+$mainFont: 'Open Sans', sans-serif;
+$mainColor: #000;
+$headingFont: 'Open Sans', Impact, sans-serif;
+$headingColor: #000;
+$headingTextShadow: none;
+$headingTextTransform: none;
+$backgroundColor: #fff;
+$linkColor: #00008B;
+$linkColorHover: lighten( $linkColor, 20% );
+$selectionBackgroundColor: #134674;
+
+// Fix links so they are not cut off
+.reveal a:not(.image) {
+	line-height: 1.3em;
+}
+
+// Background generator
+@mixin bodyBackground() {
+	@include radial-gradient( #add9e4, #f7fbfc );
+}
+
+.reveal h1 {
+    font-weight: bold;
+    font-size: 2.5em;
+}
+
+.reveal h2 {
+    font-weight: 600;
+    margin-bottom: 1.6em;
+}
+
+.reveal p, .reveal ul {
+    margin-bottom: 1.2em;
+}
+
+.reveal p.list-lead-in {
+    margin-bottom: 0em;
+}
+
+.reveal span.mono {
+    font-family: monospace;
+    color: 444;
+}
+
+.reveal figure.small {
+    font-size: 0.8em;
+}
+
+.reveal figcaption {
+    font-weight: 600;
+    font-size: 0.8em;
+    margin-bottom: -0.8em;
+}
+
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------
