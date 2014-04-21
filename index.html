@@ -165,7 +165,7 @@ transactionId   customerId   productId   timestamp             quantity
                     <ul>
                         <li class="fragment">A table is a collection of entries - each row is an entry, e.g. a customer</li>
                         <li class="fragment">The columns of a table define the what information is stored for each entry - e.g. their name, address etc.</li>
-                        <li class="fragment">Each column has a <i>type</i> - it could be a number, text ('string'), date etc.</li>
+                        <li class="fragment">Each column has a <i>type</i> - it could be a number, text ('string'), date etc. Different database systems support different types</li>
                         <li class="fragment">A common column found in tables (though not always) is a unique identifier for each row - e.g. 'customerId'. These are often used to link data in different tables (e.g. customerId appears in our transactions table) </li>
                     </ul>
                 </section>
@@ -333,7 +333,41 @@ ORDER BY lastName ASC, firstName ASC;
                     so that the transaction with the largest value comes first. If two transactions have the
                     same value, a transaction with a lower customerId should come first</p>
                 </section>
-                    
+
+                <section>
+                    <h2>Aggregation with GROUP BY</h2>
+                    <p>A common task is to summarise information from multiple rows in a table into a single row</p>
+                    <p>For example, we may want to know, for each customerId in our transactions table, what
+                    is the sum of the value of all transactions for that customer?</p>
+                    <p>We can add a GROUP BY clause to our SELECT queries to achieve this</p>
+
+                </section> 
+
+                <section>
+                    <h2>Aggregation with GROUP BY</h2>
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+SELECT customerId, SUM(transactionValue) as transactionValueSum 
+FROM transactions
+GROUP BY customerId;
+                    </code></pre>
+                    </figure>
+
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+customerId   transactionValueSum
+==========   ===================
+1            22
+2            6
+3            18
+...
+
+                    </code></pre>
+                    </figure>
+
+
+                </section>
+
 
                 <section>
                     <h2>TODO</h2>
