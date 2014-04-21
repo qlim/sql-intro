@@ -277,16 +277,73 @@ WHERE (c1 = 'US' AND        -- use parentheses to clarify order of operations
                     </figure>
 
                 </section>
+
+                <section>
+                    <h2>Exercise: Filtering with WHERE</h2>
+                    <p>Write a query to select all columns for transactions that occurred prior to 1-Jan-2014</p>
+                </section>
+
+                <section>
+                    <h2>Sorting the results of a query with ORDER BY</h2>
+                    <p>You may want to order the results of a query in a certain way. You can specify this
+                    using an ORDER BY clause in your SELECT</p>
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+SELECT *
+FROM customers
+WHERE countryCode = 'US'
+ORDER BY lastName ASC;
+                    </code></pre>
+                    </figure>
+
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+customerId   firstName   lastName    countryCode   city
+==========   =========   =========   ===========   =========
+4            D'Angelo    Barksdale   US            Baltimore
+3            Carrie      Bradshaw    US            New York
+1            Andy        Dwyer       US            Pawnee
+...
+
+                    </code></pre>
+                    </figure>
+
+                </section>
+
+                <section>
+                    <h2>Understanding ORDER BY</h2>
+                    <ul>
+                        <li>ORDER BY comes after any WHERE clause (if there is one) and is followed by the column to sort on, and then either ASC (ascending) or DESC (descending)</li>
+                        <li>If you omit the direction, ASC is assumed</li>
+                        <li>You can add additional sorting criteria (to break ties), by separating them with a comma:</li>
+                    </ul>
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+SELECT *
+FROM customers
+WHERE countryCode = 'US'
+ORDER BY lastName ASC, firstName ASC;
+                    </code></pre>
+                    </figure>
+                </section>
+
+                <section>
+                    <h2>Exercise: sorting with ORDER BY</h2>
+                    <p>Write a query to select all transactions occurring in the month of April 2014, sorted
+                    so that the transaction with the largest value comes first. If two transactions have the
+                    same value, a transaction with a lower customerId should come first</p>
+                </section>
                     
 
                 <section>
                     <h2>TODO</h2>
                     <ul>
-                        <li>ORDER BY</li>
+                        <li>date literals</li>
                         <li>GROUP BY - SUM, AVG, MAX</li>
                         <li>JOIN</li>
                         <li>explain NULL</li>
                         <li>dealing with non std column names</li>
+                        <li>Good learning resources</li>
                     </ul>
                 </section>
 
