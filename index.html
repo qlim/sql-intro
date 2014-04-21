@@ -48,17 +48,17 @@
                 <section>
                     <h2>What are we covering today?</h2>
                     <ul>
-                        <li>What is SQL? Why is it useful?</li>
+                        <li>Relational databases - the basics</li>
                         <li>Simple SELECT queries</li>
                         <li>Simple JOINs</li>
                         <li>Aggregation - SUM, AVERAGE</li>
                     </ul>
                     <h3>What are we not covering?</h3>
                     <ul>
-                        <li>Everything else!</li>
+                        <li>Everything else</li>
                     </ul>
                     <aside class="notes">
-                        Speaker notes
+                        <!-- speaker notes can go here -->
                     </aside>
                 </section>
 
@@ -87,7 +87,7 @@ WHERE countryCode="US";
                 <section>
                     <h2>Relational databases are everywhere</h2>
                     <p class="list-lead-in">Some examples of database systems that use SQL</p>
-                    <ul>
+                    <ul class="smaller60">
                         <li>Microsoft Access</li>
                         <li>Microsoft SQL Server</li>
                         <li>Oracle RDBMS</li>
@@ -99,6 +99,10 @@ WHERE countryCode="US";
                     </ul>
                     <p class="fragment">
                     Although SQL is standardised, differences <strong>do</strong> exist between systems
+                    </p>
+                    <p class="fragment">
+                    We will be using MS Access in this tutorial but will be using a basic subset of SQL
+                    that is broadly universal
                     </p>
                 </section>
 
@@ -112,12 +116,12 @@ WHERE countryCode="US";
                     <figure class="fragment small">
                     <figcaption>Table: <span class="mono">customers</span></figcaption>
                     <pre><code data-trim contenteditable class="language-sql">
-id    firstName   lastName    countryCode   city
-===   =========   =========   ===========   =========
-1     Andy        Dwyer       US            Pawnee
-2     Bruce       Bullerby    GB            London
-3     Carrie      Bradshaw    US            New York
-4     D'Angelo    Barksdale   US            Baltimore
+customerId   firstName   lastName    countryCode   city
+==========   =========   =========   ===========   =========
+1            Andy        Dwyer       US            Pawnee
+2            Bruce       Bullerby    GB            London
+3            Carrie      Bradshaw    US            New York
+4            D'Angelo    Barksdale   US            Baltimore
 ...
 
                     </code></pre>
@@ -133,11 +137,137 @@ transactionId   customerId   productId   timestamp             quantity
 3               3            2           2014-05-04T22:48:21   12
 ...
                     </code></pre>
+                    </figure>
 
                 </section>
 
+                <section>
+                    <h2>More about tables</h2>
+                    <ul>
+                        <li class="fragment">A table is a collection of entries - each row is an entry, e.g. a customer</li>
+                        <li class="fragment">The columns of a table define the what information is stored for each entry - e.g. their name, address etc.</li>
+                        <li class="fragment">Each column has a <i>type</i> - it could be a number, text ('string'), date etc.</li>
+                        <li class="fragment">A common column found in tables (though not always) is a unique identifier for each row - e.g. 'customerId'. These are often used to link data in different tables (e.g. customerId appears in our transactions table) </li>
+                    </ul>
+                </section>
 
+                <section>
+                    <h2>Example: Your first SELECT query</h2>
+                    <p>A SELECT query is used to get information out of a database. It's probably the most common type of query you will write</p>
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+SELECT customerId, firstName, lastName, countryCode 
+FROM customers;
+                    </code></pre>
+                    </figure>
+                    <p class="fragment">You should get output like this:</p>
 
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+customerId   firstName   lastName    countryCode
+==========   =========   =========   ===========
+1            Andy        Dwyer       US         
+2            Bruce       Bullerby    GB         
+3            Carrie      Bradshaw    US         
+4            D'Angelo    Barksdale   US         
+...
+
+                    </code></pre>
+                    </figure>
+
+                    <aside class="notes">
+                        Open Access, load database, create blank query with Query Design, switch to SQL view
+                    </aside>
+
+                </section>
+
+                <section>
+                    <h2>Deconstructing your first SELECT query</h2>
+                        <ul>
+                            <li>The start of every SQL query tells you what sort of query you are running, 
+                            in this case, it's SELECT</li>
+                            <li>Next comes the list of columns that you want to see in the output, separated by
+                            commas</li>
+                            <li>The FROM clause specifies which table the columns reside in</li>
+                            <li>Finally, every SQL query ends with a semicolon</li>
+
+                        </ul>
+                    </h2>
+                </section>
+
+                <section>
+                    <h2>Exercise: Simple SELECT query</h2>
+                    <p>Write a query that selects the transactionId and timestamp columns from the
+                    transactions table
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Filtering using a WHERE clause</h2>
+                    <p>Often you will only want to select rows that match a certain criteria. You can add a
+                    WHERE clause to your SELECT query that will specify which rows to include</p>
+                    <p>This example selects only customers whose countryCode is 'US':</p>
+
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+SELECT *
+FROM customers
+WHERE countryCode = 'US';
+                    </code></pre>
+                    </figure>
+
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+customerId   firstName   lastName    countryCode   city
+==========   =========   =========   ===========   =========
+1            Andy        Dwyer       US            Pawnee
+3            Carrie      Bradshaw    US            New York
+4            D'Angelo    Barksdale   US            Baltimore
+...
+
+                    </code></pre>
+                    </figure>
+                </section>
+
+                <section>
+                    <h2>Deconstructing your new query</h2>
+                        <ul>
+                            <li>You can use '*' as a shorthand to mean 'select all of the columns in the table'
+                            instead of listing them explicitly</li>
+                            <li>The WHERE clause comes after the FROM and is followed by a conditional expression. Only rows that meet the criteria will be included in the final output</li>
+
+                        </ul>
+                    </h2>
+                </section>
+
+                <section>
+                    <h2>Conditional expressions</h2>
+                    <p>Conditional expressions should be fairly familiar to you if you've used them elsewhere - 
+                    e.g. and IF() function in Excel, although there are some differences</p>
+
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+WHERE column = 'text'       -- test for equality
+WHERE column = 2            -- also works for numbers
+WHERE column &gt; 5            -- greater than is '&gt;', less than is '&lt;'
+WHERE column &lt;&gt; 8           -- test for inequality
+WHERE c1 = 'US' AND c2 &lt; 10 -- you can combine conditions with AND 
+WHERE (c1 = 'US' AND        -- use parentheses to clarify order of operations
+  c2 &lt; 10) OR c1 = 'GB'     
+                    </code></pre>
+                    </figure>
+
+                </section>
+                    
+
+                <section>
+                    <h2>TODO</h2>
+                    <ul>
+                        <li>GROUP BY - SUM, AVG, MAX</li>
+                        <li>JOIN</li>
+                        <li>explain NULL</li>
+                        <li>dealing with non std column names</li>
+                    </ul>
                 </section>
 
                 <section>

@@ -12,28 +12,28 @@
 .reveal h1 {
   font-weight: bold;
   font-size: 2.5em; }
-
 .reveal h2 {
   font-weight: 600;
   margin-bottom: 1.6em; }
-
 .reveal p, .reveal ul {
   margin-bottom: 1.2em; }
-
 .reveal p.list-lead-in {
   margin-bottom: 0em; }
-
 .reveal span.mono {
   font-family: monospace;
   color: 444; }
-
 .reveal figure.small {
   font-size: 0.8em; }
-
 .reveal figcaption {
   font-weight: 600;
   font-size: 0.8em;
   margin-bottom: -0.8em; }
+.reveal .smaller80 {
+  font-size: 0.8em; }
+.reveal .smaller60 {
+  font-size: 0.6em; }
+.reveal ul.smaller60 li {
+  line-height: 1.2em; }
 
 /*********************************************
  * GLOBAL STYLES
