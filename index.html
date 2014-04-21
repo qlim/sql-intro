@@ -49,17 +49,21 @@
                     <h2>What are we covering today?</h2>
                     <ul>
                         <li>Relational databases - the basics</li>
-                        <li>Simple SELECT queries</li>
-                        <li>Simple JOINs</li>
+                        <li>Simple SELECT queries with WHERE, ORDER BY</li>
                         <li>Aggregation - SUM, AVERAGE</li>
+                        <li>Simple JOINs</li>
                     </ul>
-                    <h3>What are we not covering?</h3>
+                </section>
+                <section>
+                    <h2>What are we not covering?</h2>
                     <ul>
-                        <li>Everything else</li>
+                        <li>This is an introduction only!</li>
+                        <li>This is not about database design</li>
+                        <li>This is a general SQL introduction and not about specific database systems</li>
+                        <li>Many systems have nice frontends that help you build queries - you can often get
+                        away without manually writing any SQL at all. Frontends differ by system but are easy to 
+                        pick up - especially if you have a basic understanding of the underlying SQL</li>
                     </ul>
-                    <aside class="notes">
-                        <!-- speaker notes can go here -->
-                    </aside>
                 </section>
 
                 <section>
@@ -104,6 +108,21 @@ WHERE countryCode="US";
                     We will be using MS Access in this tutorial but will be using a basic subset of SQL
                     that is broadly universal
                     </p>
+                </section>
+
+                <section>
+                    <h2>Why learn SQL?</h2>
+                    <p>In business you might want to:</p>
+                    <ul>
+                        <li><strong>Extract</strong> a subset of data from a larger dataset - 
+                        <strong>filter</strong> it to only include data you're interested in and maybe
+                        <strong>sort</strong> it while you're at it</li>
+                        <li><strong>Transform</strong> data by performing calculations on it</li>
+                        <li><strong>Summarise</strong> complex data (e.g. computing sums or averages)</li>
+                        <li><strong>Insert</strong> new data or <strong>delete</strong> existing data from a 
+                        dataset (out of scope for today)</li>
+                    </ul>
+                    <p>And of course, databases are behind a lot of mobile and web applications</p>
                 </section>
 
                 <section>
@@ -263,6 +282,7 @@ WHERE (c1 = 'US' AND        -- use parentheses to clarify order of operations
                 <section>
                     <h2>TODO</h2>
                     <ul>
+                        <li>ORDER BY</li>
                         <li>GROUP BY - SUM, AVG, MAX</li>
                         <li>JOIN</li>
                         <li>explain NULL</li>
