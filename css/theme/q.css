@@ -9,6 +9,11 @@
 .reveal a:not(.image) {
   line-height: 1.3em; }
 
+.reveal h1, .reveal h2 {
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none; }
 .reveal h1 {
   font-weight: bold;
   font-size: 2.0em; }

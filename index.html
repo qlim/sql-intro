@@ -82,7 +82,7 @@
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
 SELECT firstName, lastName, countryCode, city
-FROM customers
+FROM Customers
 WHERE countryCode="US";
                     </code></pre>
                     </figure>
@@ -176,7 +176,7 @@ transactionId   customerId   productId   timestamp             quantity
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
 SELECT customerId, firstName, lastName, countryCode 
-FROM customers;
+FROM Customers;
                     </code></pre>
                     </figure>
                     <p class="fragment">You should get output like this:</p>
@@ -230,7 +230,7 @@ customerId   firstName   lastName    countryCode
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
 SELECT *
-FROM customers
+FROM Customers
 WHERE countryCode = 'US';
                     </code></pre>
                     </figure>
@@ -290,7 +290,7 @@ WHERE (c1 = 'US' AND        -- use parentheses to clarify order of operations
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
 SELECT *
-FROM customers
+FROM Customers
 WHERE countryCode = 'US'
 ORDER BY lastName ASC;
                     </code></pre>
@@ -320,7 +320,7 @@ customerId   firstName   lastName    countryCode   city
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
 SELECT *
-FROM customers
+FROM Customers
 WHERE countryCode = 'US'
 ORDER BY lastName ASC, firstName ASC;
                     </code></pre>
@@ -335,6 +335,111 @@ ORDER BY lastName ASC, firstName ASC;
                 </section>
 
                 <section>
+                    <h2>Expressions in SELECT statements</h2>
+                    <p>So far we have just been giving the database a list of columns that we want to see in
+                    the output of our query, as-is</p>
+                    <p>However, we can also ask the database to perform calculations on the data as well</p>
+
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+SELECT customerId, firstName + ' ' + lastName AS fullName, 
+  tier + 10 AS tierPlus10
+FROM Customers
+ORDER BY tierPlus10 DESC;
+                    </code></pre>
+                    </figure>
+
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+customerId   fullName             tierPlus10
+==========   ==================   ==========
+4            D'Angelo Barksdale   19
+1            Andy Dwyer           16
+3            Carrie Bradshaw      15
+2            Bruce Bullerby       14
+...
+
+                    </code></pre>
+                    </figure>
+
+
+                </section>
+
+                <section>
+                    <h2>Explaining expressions</h2>
+                    <ul>
+                        <li>Instead of simply specifying the column name, we use an expression to tell the database
+                        how to calculate that column in our output</li>
+                        <li>We can specify a label for that output column by using 'AS' after the expression with
+                        a name</li>
+                        <li>Expressions can get complex! As well as basic math, most databases come with lots of
+                        in-built functions that can be used</li>
+                        <li>Unfortuately, different database systems offer different functions, so you will need
+                        to find out what's available for your given system</li>
+                    </ul>
+
+                </section>
+
+                <section>
+                    <h2>More expression examples (Access)</h2>
+                    <p>Calculating the months since the customer first joined</p>
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+SELECT lastName, DateDiff('m', joinDate, Now()) AS monthsActive 
+FROM Customers
+ORDER BY monthsActive DESC;
+                    </code></pre>
+                    </figure>
+
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+lastName     monthsActive 
+==========   ============
+Dwyer        15
+Bullerby     11
+Bradshaw     3
+Barksdale    2
+...
+
+                    </code></pre>
+                    </figure>
+
+
+                </section>
+
+                <section>
+                    <h2>More expression examples (Access)</h2>
+                    <p>You can even include 'IF' functions</p>
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+SELECT IIf(tier &gt; 5, '*' + firstName, firstName) as highlightedName, tier
+FROM Customers;
+                    </code></pre>
+                    </figure>
+
+                    <figure class="fragment">
+                    <pre><code data-trim contenteditable class="language-sql">
+highlightedName   tier 
+===============   ====
+*Andy             6
+Bruce             4
+Carrie            5
+*D'Angelo         9
+...
+
+                    </code></pre>
+                    </figure>
+                </section>
+
+
+                <section>
+                    <h2>Exercise: expressions</h2>
+                    <p>Write a query to retrieve all sales this year, and include the average unit price
+                    for each transaction</p>
+                </section>
+
+
+                <section>
                     <h2>Aggregation with GROUP BY</h2>
                     <p>A common task is to summarise information from multiple rows in a table into a single row</p>
                     <p>For example, we may want to know, for each customerId in our transactions table, what
@@ -347,16 +452,16 @@ ORDER BY lastName ASC, firstName ASC;
                     <h2>Aggregation with GROUP BY</h2>
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
-SELECT customerId, SUM(transactionValue) as transactionValueSum 
-FROM transactions
+SELECT customerId, Sum(salesValue) as salesValueSum 
+FROM Sales
 GROUP BY customerId;
                     </code></pre>
                     </figure>
 
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
-customerId   transactionValueSum
-==========   ===================
+customerId   salesValueSum
+==========   =============
 1            22
 2            6
 3            18
@@ -368,12 +473,35 @@ customerId   transactionValueSum
 
                 </section>
 
+                <section>
+                    <h2>Explaining GROUP BY</h2>
+                    <ul>
+                        <li>You can think of GROUP BY as being similar to Pivot Tables in Excel</li>
+                        <li>In the example, we tell the database that we want to combine rows with the same
+                        customerId together into a single row in our output. We do this by specifying its 
+                        column name after the GROUP BY clause</li>
+                        <li>After 'SELECT' we need to list the columns we want in the output as usual, but if
+                        we list a column that does <strong>not</strong> appear after GROUP BY, we also need
+                        to tell the database which function to use to combine values from multiple rows. In this
+                        case we use the Sum function to tell Access to add the values of salesValue together</li>
+                        <li>You can specify multiple columns as part of a GROUP BY clause, to get all unique
+                        combinations of values in those columns</li>
+
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Exercise: GROUP BY</h2>
+                    <p>Write a query to calculate the total sales and average unit sell price for every
+                    customer &amp; product combination</p>
+                </section>
+
 
                 <section>
                     <h2>TODO</h2>
                     <ul>
                         <li>date literals</li>
-                        <li>GROUP BY - SUM, AVG, MAX</li>
+                        <li>GROUP BY - AVG, MAX, COUNT</li>
                         <li>JOIN</li>
                         <li>explain NULL</li>
                         <li>dealing with non std column names</li>
