@@ -36,6 +36,7 @@
 
             <!-- Any section element inside of this container is displayed as a slide -->
             <div class="slides">
+            
                 <section>
                     <h1>Introduction to SQL</h1>
                     <h5>Presentation for the LBS Technology Club</h5>
@@ -105,7 +106,7 @@ WHERE countryCode="US";
                     Although SQL is standardised, differences <strong>do</strong> exist between systems
                     </p>
                     <p class="fragment">
-                    We will be using MS Access in this tutorial but will be using a basic subset of SQL
+                    We will be using <strong>SQLite</strong> in this tutorial but will be using a basic subset of SQL
                     that is broadly universal
                     </p>
                 </section>
@@ -122,7 +123,7 @@ WHERE countryCode="US";
                         <li><strong>Insert</strong> new data or <strong>delete</strong> existing data from a 
                         dataset (out of scope for today)</li>
                     </ul>
-                    <p>And of course, databases are behind a lot of mobile and web applications</p>
+                    <p>And of course, databases are at the heart of many mobile and web applications</p>
                 </section>
 
                 <section>
@@ -133,27 +134,27 @@ WHERE countryCode="US";
                     which have <strong>columns</strong> and <strong>rows</strong>
 
                     <figure class="fragment small">
-                    <figcaption>Table: <span class="mono">customers</span></figcaption>
+                    <figcaption>Table: <span class="mono">Customers</span></figcaption>
                     <pre><code data-trim contenteditable class="language-sql">
-customerId   firstName   lastName    countryCode   city
-==========   =========   =========   ===========   =========
-1            Andy        Dwyer       US            Pawnee
-2            Bruce       Bullerby    GB            London
-3            Carrie      Bradshaw    US            New York
-4            D'Angelo    Barksdale   US            Baltimore
+#|customerId|firstName|lastName |countryCode|city       |tier|joinDate  
+-+----------+---------+---------+-----------+-----------+----+----------
+1|1         |Andy     |Dwyer    |US         |Pawnee     |3   |2013-01-08
+2|2         |Bruce    |Bullerby |GB         |London     |1   |2013-01-21
+3|3         |Carrie   |Bradshaw |US         |New York   |2   |2013-03-04
+4|4         |D'Angelo |Barksdale|US         |Baltimore  |1   |2013-04-19
 ...
 
                     </code></pre>
                     </figure>
 
                     <figure class="fragment small">
-                    <figcaption>Table: <span class="mono">transactions</span></figcaption>
+                    <figcaption>Table: <span class="mono">Sales</span></figcaption>
                     <pre><code data-trim contenteditable class="language-sql">
-transactionId   customerId   productId   timestamp             quantity
-=============   ==========   =========   ===================   ========
-1               2            1           2014-05-04T22:44:43   4
-2               3            1           2014-05-04T22:48:21   3
-3               3            2           2014-05-04T22:48:21   12
+# |transactionId|customerId|productId|timestamp       |quantity|salesValue
+--+-------------+----------+---------+----------------+--------+----------
+1 |1            |7         |5        |2013-06-01 09:44|6       |336       
+2 |2            |4         |5        |2013-04-20 04:37|10      |625       
+3 |3            |8         |4        |2013-04-12 11:04|16      |1051.2    
 ...
                     </code></pre>
                     </figure>
@@ -183,12 +184,12 @@ FROM Customers;
 
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
-customerId   firstName   lastName    countryCode
-==========   =========   =========   ===========
-1            Andy        Dwyer       US         
-2            Bruce       Bullerby    GB         
-3            Carrie      Bradshaw    US         
-4            D'Angelo    Barksdale   US         
+#|customerId|firstName|lastName |countryCode
+-+----------+---------+---------+-----------
+1|1         |Andy     |Dwyer    |US         
+2|2         |Bruce    |Bullerby |GB         
+3|3         |Carrie   |Bradshaw |US         
+4|4         |D'Angelo |Barksdale|US       
 ...
 
                     </code></pre>
@@ -237,11 +238,11 @@ WHERE countryCode = 'US';
 
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
-customerId   firstName   lastName    countryCode   city
-==========   =========   =========   ===========   =========
-1            Andy        Dwyer       US            Pawnee
-3            Carrie      Bradshaw    US            New York
-4            D'Angelo    Barksdale   US            Baltimore
+#|customerId|firstName|lastName |countryCode|city       |tier|joinDate  
+-+----------+---------+---------+-----------+-----------+----+----------
+1|1         |Andy     |Dwyer    |US         |Pawnee     |3   |2013-01-08
+2|3         |Carrie   |Bradshaw |US         |New York   |2   |2013-03-04
+3|4         |D'Angelo |Barksdale|US         |Baltimore  |1   |2013-04-19
 ...
 
                     </code></pre>
@@ -298,11 +299,14 @@ ORDER BY lastName ASC;
 
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
-customerId   firstName   lastName    countryCode   city
-==========   =========   =========   ===========   =========
-4            D'Angelo    Barksdale   US            Baltimore
-3            Carrie      Bradshaw    US            New York
-1            Andy        Dwyer       US            Pawnee
+#|customerId|firstName|lastName |countryCode|city       |tier|joinDate  
+-+----------+---------+---------+-----------+-----------+----+----------
+1|4         |D'Angelo |Barksdale|US         |Baltimore  |1   |2013-04-19
+2|7         |Gary     |Blauman  |US         |New York   |2   |2013-06-03
+3|3         |Carrie   |Bradshaw |US         |New York   |2   |2013-03-04
+4|1         |Andy     |Dwyer    |US         |Pawnee     |3   |2013-01-08
+5|5         |Eric     |Murphy   |US         |Los Angeles|3   |2013-04-23
+6|8         |Henry    |Pollard  |US         |Los Angeles|2   |2013-06-11
 ...
 
                     </code></pre>
@@ -341,22 +345,21 @@ ORDER BY lastName ASC, firstName ASC;
                     <p>However, we can also ask the database to perform calculations on the data as well</p>
 
                     <figure class="fragment">
-                    <pre><code data-trim contenteditable class="language-sql">
-SELECT customerId, firstName + ' ' + lastName AS fullName, 
+                    <pre><code data-trim contenteditable class="language-sql"> 
+SELECT customerId, firstName || ' ' || lastName AS fullName, 
   tier + 10 AS tierPlus10
-FROM Customers
-ORDER BY tierPlus10 DESC;
+FROM Customers ORDER BY tierPlus10 DESC; 
                     </code></pre>
                     </figure>
 
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
-customerId   fullName             tierPlus10
-==========   ==================   ==========
-4            D'Angelo Barksdale   19
-1            Andy Dwyer           16
-3            Carrie Bradshaw      15
-2            Bruce Bullerby       14
+#|customerId|fullName        |tierPlus10
+-+----------+----------------+----------
+1|1         |Andy Dwyer      |13        
+2|5         |Eric Murphy     |13        
+3|6         |Francis Urquhart|13        
+4|3         |Carrie Bradshaw |12        
 ...
 
                     </code></pre>
@@ -382,7 +385,7 @@ customerId   fullName             tierPlus10
 
                 <section>
                     <h2>More expression examples (Access)</h2>
-                    <p>Calculating the months since the customer first joined</p>
+                    <p>Calculating the months since the customer first joined (this works in Access but not SQLite)</p>
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
 SELECT lastName, DateDiff('m', joinDate, Now()) AS monthsActive 
@@ -409,7 +412,7 @@ Barksdale    2
 
                 <section>
                     <h2>More expression examples (Access)</h2>
-                    <p>You can even include 'IF' functions</p>
+                    <p>You can even include 'IF' functions (again, works in Access but not SQLite)</p>
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
 SELECT IIf(tier &gt; 5, '*' + firstName, firstName) as highlightedName, tier
@@ -460,11 +463,11 @@ GROUP BY customerId;
 
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
-customerId   salesValueSum
-==========   =============
-1            22
-2            6
-3            18
+#|customerId|salesValueSum   
+-+----------+----------------
+1|1         |4865.0          
+2|2         |740.6           
+3|3         |3421.2   
 ...
 
                     </code></pre>
@@ -495,7 +498,92 @@ customerId   salesValueSum
                     <p>Write a query to calculate the total sales and average unit sell price for every
                     customer &amp; product combination</p>
                 </section>
+                
+                <section>
+                    <h2>JOINing tables</h2>
+                    <ul>
+                        <li>So far, we've only be writing queries that operate on one table at a time</li>
+                        <li>However, it's very common to need to combine information from multiple tables in a database</li>
+                        <li>For instance, in our sample database we have a <i>Customers</i> table, that holds information on each customer such as their name and location. We also have a <i>Sales</i> table, that describes the sales made to each customer.</li>
+                        <li>But what if we need a query that selects all of the sales, but only for customers in a certain country. We don't store the location of each customer in our <i>Sales</i> table, we just store it once in the <i>Customers</i> table. We need to join the <i>Customers</i> table to <i>Sales</i></li>
+                    </ul>
+                </section>
 
+                <section>
+                    <h2>JOINing tables</h2>
+                    <figure>
+                    <pre><code data-trim contenteditable class="language-sql">
+SELECT s.transactionId, c.customerId, c.lastName, c.countryCode, 
+  s.timestamp, s.quantity
+FROM Sales s
+JOIN Customers c ON s.customerId = c.customerId
+WHERE c.countryCode = 'US';
+...
+
+                    </code></pre>
+                    </figure>
+
+                    <figure>
+                    <pre><code data-trim contenteditable class="language-sql">
+# |transactionId|customerId|lastName |countryCode|timestamp       |quantity
+--+-------------+----------+---------+-----------+----------------+--------
+1 |1            |7         |Blauman  |US         |2013-06-01 09:44|6       
+2 |2            |4         |Barksdale|US         |2013-04-20 04:37|10      
+3 |3            |8         |Pollard  |US         |2013-04-12 11:04|16      
+4 |4            |3         |Bradshaw |US         |2013-12-20 19:15|17      
+...
+
+                    </code></pre>
+                    </figure>
+
+                </section>
+
+                <section>
+                    <h2>Explaining JOIN</h2>
+                    <ul>
+                        <li>Like a normal SELECT statement, you specify the columns you want first, however now
+                        we also need to tell the database which table each column comes from. We do this by
+                        specifying columns in the format: [tableAlias].[columnName]</li>
+                        <li>The main table that our query is based on comes after FROM keyword, however we also 
+                        need to give the table a 'alias' ('s' in the example). We use this alias to refer to the table elsewhere in the query</li>
+                        <li>The JOIN comes next - first we say which table we want to join onto our main table, then after ON we tell the database how to match rows from the new table to the main table</li>
+                        <li>We can include a WHERE clause as per usual - only now we need remember to use the table alias in our condition</li>
+
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Exercise: JOIN</h2>
+                    <p>Write a query to select transactionId, productId, the product name and quantity for each transaction that is for a product in the Widget category</p>
+                </section>
+
+                <section>
+                    <h2>JOINing multiple tables</h2>
+                    <p>We can also join 3 or more tables together by adding more JOIN clauses</p>
+                    <figure>
+                    <pre><code data-trim contenteditable class="language-sql">
+SELECT s.transactionId, c.customerId, c.lastName, 
+  p.productId, p.name AS productName, s.quantity
+FROM Sales s
+JOIN Customers c ON s.customerId = c.customerId
+JOIN Products p ON s.productId = p.productId;
+                    </code></pre>
+                    </figure>
+                    <figure>
+                    <pre><code data-trim contenteditable class="language-sql">
+# |transactionId|customerId|lastName |productId|productName|quantity
+--+-------------+----------+---------+---------+-----------+--------
+1 |1            |7         |Blauman  |5        |Bling      |6       
+2 |2            |4         |Barksdale|5        |Bling      |10      
+3 |3            |8         |Pollard  |4        |Moolah     |16      
+4 |4            |3         |Bradshaw |6        |Pip        |17      
+...
+                    </code></pre>
+                    </figure>
+
+
+
+                </section>
 
                 <section>
                     <h2>TODO</h2>
