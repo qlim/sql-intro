@@ -14,7 +14,7 @@ for transactionId in range(1, 41):
 
 tx.sort(key=lambda x: x[3])
 
-for t, ci, pi, ti, q, sv in tx:
+for t, (_, ci, pi, ti, q, sv) in enumerate(tx):
     print """INSERT INTO Sales (transactionId, customerId, productId, timestamp,
     quantity, salesValue) VALUES (%d, %d, %d, datetime("%s"), %s, %s);""" % (
-    t, ci, pi, ti.strftime("%Y-%m-%d %H:%M:%S"), q, sv)
+    t+1, ci, pi, ti.strftime("%Y-%m-%d %H:%M:%S"), q, sv)

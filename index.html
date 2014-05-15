@@ -181,6 +181,16 @@ WHERE countryCode="US";
                 </section>
 
                 <section>
+                    <h2>Introducing our example database</h2>
+                    <p>Our example database has 3 tables:</p>
+                    <ul>
+                        <li>Customers</li>
+                        <li>Products</li>
+                        <li>Sales</li>
+                    </ul>
+                </section>
+
+                <section>
                     <h2>Example: Your first SELECT query</h2>
                     <p>A SELECT query is used to get information out of a database. It's probably the most common type of query you will write</p>
                     <figure class="fragment">
@@ -219,6 +229,7 @@ FROM Customers;
                             commas</li>
                             <li>The FROM clause specifies which table the columns reside in</li>
                             <li>Finally, every SQL query ends with a semicolon</li>
+                            <li>Whitespace is ignored. It's good practice if you can to split your query over multiple lines to improve readability</li>
 
                         </ul>
                     </h2>
@@ -227,7 +238,7 @@ FROM Customers;
                 <section>
                     <h2>Exercise: Simple SELECT query</h2>
                     <p>Write a query that selects the transactionId and timestamp columns from the
-                    transactions table
+                    Sales table
                     </p>
                 </section>
 
@@ -272,7 +283,7 @@ WHERE countryCode = 'US';
                 <section>
                     <h2>Conditional expressions</h2>
                     <p>Conditional expressions should be fairly familiar to you if you've used them elsewhere - 
-                    e.g. and IF() function in Excel, although there are some differences</p>
+                    e.g. with IF() functions in Excel, although there are some differences</p>
 
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
@@ -290,7 +301,14 @@ WHERE (c1 = 'US' AND        -- use parentheses to clarify order of operations
 
                 <section>
                     <h2>Exercise: Filtering with WHERE</h2>
-                    <p>Write a query to select all columns for transactions that occurred prior to 1-Jan-2014</p>
+                    <p>Write a query to select all columns for transactions that occurred prior to 1-Sep-2013.</p>
+                    <p>Hint: write the date as '2013-09-01'</p>
+                </section>
+
+                <section>
+                    <h2>A quick note about dates in databases</h2>
+                    <p>Date handling tends to vary quite a bit between different database systems</p>
+                    <p>Most systems will have specialised functions that make working with dates easier - but these are out of scope for today</p>
                 </section>
 
                 <section>
@@ -342,9 +360,10 @@ ORDER BY lastName ASC, firstName ASC;
 
                 <section>
                     <h2>Exercise: sorting with ORDER BY</h2>
-                    <p>Write a query to select all transactions occurring in the month of April 2014, sorted
+                    <p>Write a query to select all sales occurring in the month of April 2013, sorted
                     so that the transaction with the largest value comes first. If two transactions have the
                     same value, a transaction with a lower customerId should come first</p>
+                    <p>Hint: you will need to combine 2 conditions with AND to select only sales from April 2013</p>
                 </section>
 
                 <section>
@@ -424,7 +443,7 @@ Barksdale    2
                     <p>You can even include 'IF' functions (again, works in Access but not SQLite)</p>
                     <figure class="fragment">
                     <pre><code data-trim contenteditable class="language-sql">
-SELECT IIf(tier &gt; 5, '*' + firstName, firstName) as highlightedName, tier
+SELECT IIf(tier = 1, '*' + firstName, firstName) as highlightedName, tier
 FROM Customers;
                     </code></pre>
                     </figure>
@@ -433,10 +452,10 @@ FROM Customers;
                     <pre><code data-trim contenteditable class="language-sql">
 highlightedName   tier 
 ===============   ====
-*Andy             6
-Bruce             4
-Carrie            5
-*D'Angelo         9
+Andy              3
+*Bruce            1
+Carrie            2
+*D'Angelo         1
 ...
 
                     </code></pre>
@@ -446,7 +465,7 @@ Carrie            5
 
                 <section>
                     <h2>Exercise: expressions</h2>
-                    <p>Write a query to retrieve all sales this year, and include the average unit price
+                    <p>Write a query to retrieve all sales since June 1, 2013, and include the average unit price
                     for each transaction</p>
                 </section>
 
@@ -454,8 +473,8 @@ Carrie            5
                 <section>
                     <h2>Aggregation with GROUP BY</h2>
                     <p>A common task is to summarise information from multiple rows in a table into a single row</p>
-                    <p>For example, we may want to know, for each customerId in our transactions table, what
-                    is the sum of the value of all transactions for that customer?</p>
+                    <p>For example, we may want to know, what
+                    is the total value of all sales for each customer?</p>
                     <p>We can add a GROUP BY clause to our SELECT queries to achieve this</p>
 
                 </section> 
@@ -488,14 +507,14 @@ GROUP BY customerId;
                 <section>
                     <h2>Explaining GROUP BY</h2>
                     <ul>
-                        <li>You can think of GROUP BY as being similar to Pivot Tables in Excel</li>
-                        <li>In the example, we tell the database that we want to combine rows with the same
-                        customerId together into a single row in our output. We do this by specifying its 
-                        column name after the GROUP BY clause</li>
-                        <li>After 'SELECT' we need to list the columns we want in the output as usual, but if
+                        <li>GROUP BY works a bit like Pivot Tables in Excel</li>
+                        <li>In the example, we combined rows with the same
+                        customerId together into a single row in our output. We did this by specifying the 
+                        column name 'customerId' after the GROUP BY clause</li>
+                        <li>After 'SELECT' we list the columns we want in the output (as usual), but if
                         we list a column that does <strong>not</strong> appear after GROUP BY, we also need
                         to tell the database which function to use to combine values from multiple rows. In this
-                        case we use the Sum function to tell Access to add the values of salesValue together</li>
+                        case we use the Sum function to tell it to add the values of salesValue together</li>
                         <li>You can specify multiple columns as part of a GROUP BY clause, to get all unique
                         combinations of values in those columns</li>
 
@@ -506,6 +525,7 @@ GROUP BY customerId;
                     <h2>Exercise: GROUP BY</h2>
                     <p>Write a query to calculate the total sales and average unit sell price for every
                     customer &amp; product combination</p>
+                    <p>Hint: you will need to use an expression that contains 2 Sum functions to calculate the average unit sell price</p>
                 </section>
                 
                 <section>
@@ -555,6 +575,11 @@ WHERE c.countryCode = 'US';
                         specifying columns in the format: [tableAlias].[columnName]</li>
                         <li>The main table that our query is based on comes after FROM keyword, however we also 
                         need to give the table a 'alias' ('s' in the example). We use this alias to refer to the table elsewhere in the query</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Explaining JOIN (cont)</h2>
+                    <ul>
                         <li>The JOIN comes next - first we say which table we want to join onto our main table, then after ON we tell the database how to match rows from the new table to the main table</li>
                         <li>We can include a WHERE clause as per usual - only now we need remember to use the table alias in our condition</li>
 
@@ -590,24 +615,68 @@ JOIN Products p ON s.productId = p.productId;
                     </code></pre>
                     </figure>
 
-
-
                 </section>
 
                 <section>
-                    <h2>TODO</h2>
+                    <h2>Exercise: multiple joins</h2>
+                    <p>Write a query that outputs for each transaction the following: the first name of the customer, the tier of the customer, the product name and category and the quantity
+                    </p>
+                </section>
+                <section>
+                    <h2>Exercise: aggregating in joins</h2>
+                    <p>Modify your previous query so that instead of a line for every transaction, it calculates the total sales in each category for every customer </p>
+                </section>
+
+                <section>
+                    <h2>We've only scratched the surface of JOIN</h2>
+                    <p>We've only one covered one specific type of JOIN - called a LEFT INNER JOIN</p>
+                    <p>There are also RIGHT INNER JOINs, LEFT and RIGHT OUTER JOINs, FULL OUTER JOINs, CROSS JOINs and more. Each uses different rules for combining the tables</p>
+                    <p>You can also join a table to itself, or join a table to another multiple times (on different columns)</p>
+                </section>
+
+                <section>
+                    <h2>Some parting tips</h2>
                     <ul>
-                        <li>date literals</li>
-                        <li>GROUP BY - AVG, MAX, COUNT</li>
-                        <li>JOIN</li>
-                        <li>explain NULL</li>
-                        <li>dealing with non std column names</li>
-                        <li>Good learning resources</li>
+                        <li>Databases also have a concept of NULL values - used when there is no data. NULL doesn't always behave how you might expect it to, especially if you try to do math on it</li>
+                        <li>Your database table names or columns may contain spaces of other characters in them - you may need to enclose these names in [brackets] or 'quotation marks' depending on the database system</li>
+                        <li>If you're working with very large databases it can help to test your queries on a smaller subset of data - to help you find and fix mistakes quicker</li>
+                    </ul>
+                </section>
+
+
+                <section>
+                    <h2>Things we haven't been able to cover</h2>
+                    <ul>
+                        <li><strong>You can query queries!</strong> Most db systems will let you store queries (sometimes called 'views') and let you query those queries just like you would a table</li>
+                        <li><strong>SQL is used for a lot more than reading data</strong> - it can be used to insert or delete data, create or delete or even alter tables and more</li>
+                        <li>DB systems each support a lot of <strong>custom</strong> functions that can be very useful for doing analysis. Some even let you code your own functions (like using VB in Excel)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Things we haven't been able to cover</h2>
+                    <ul>
+                        <li><strong>Designing robust and high-performing</strong> databases is a whole field in itself. Understanding some of the basics (e.g. indexes and how to take advantage of them) can help you to write more efficient queries</li>
+                        <li>Most databases come with tools to help you <strong>analyse the performance</strong> of your queries if they're taking a long time to execute</li>
+                        <li>Saying it again - <strong>query builders/GUIs are your friend</strong>. Don't write SQL if you don't have to!</li>
                     </ul>
                 </section>
 
                 <section>
-                    <h1>THE END</h1>
+                    <h2>We're out of time!</h2>
+                    <p>Here are some other resources you may want to look into:</p>
+                    <ul>
+                        <li><a href="http://www.w3schools.com/sql/">w3schools' SQL tutorial</a> - you can try queries yourself from within your browser</li>
+                        <li><a href="http://sqlzoo.net/wiki/SELECT_basics">sqlzoo</a> also lets you practice interactively</a></li>
+                        <li><a href="https://www.coursera.org/course/db">Stanford's Introduction to Databases</a> on <a href="https://www.coursera.org">Coursera</a></li>
+                    </ul>
+
+                </section>
+
+
+                <section>
+                    <h1>Thanks for your attention!</h1>
+                    <p>&nbsp;</p>
+                    <h3>We hope it's been useful!</h3>
                 </section>
 
             </div>
