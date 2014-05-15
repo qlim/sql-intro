@@ -44,7 +44,7 @@
                     <p>
                         <small><a href="http://github.com/qlim">Qi-Shan Lim</a> / <a href="http://twitter.com/qmanic">@qmanic</a></small>
                     </p>
-                    <p><small>This presentation is live at <a href="http://qlim.github.io/sql-intro">http://qlim.github.io/sql-intro</a>
+                    <p><small>This presentation is live at <a href="http://qlim.github.io/sql-intro">http://qlim.github.io/sql-intro</a> (<a href="http://github.com/qlim/sql-intro">src</a>)
                     </small>
                     </p>
                 </section>
@@ -526,6 +526,22 @@ GROUP BY customerId;
                     <p>Write a query to calculate the total sales and average unit sell price for every
                     customer &amp; product combination</p>
                     <p>Hint: you will need to use an expression that contains 2 Sum functions to calculate the average unit sell price</p>
+                </section>
+
+                <section>
+                    <h2>Other Aggregate Functions</h2>
+                    <ul>
+                        <li>Sum()</li>
+                        <li>Avg()</li>
+                        <li>Count() - returns the number of rows</li>
+                        <li>First() and Last() (not in SQLite)</li>
+                        <li>Max() and Min()</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Exercise: GROUP BY</h2>
+                    <p>Write a query that returns the following for each customer: the number of transactions they have made (call it numOfTransactions) and the value of their largest transaction (call it maxSalesValue)</p>
                 </section>
                 
                 <section>
